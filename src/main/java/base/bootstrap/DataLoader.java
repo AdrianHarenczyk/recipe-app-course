@@ -9,6 +9,7 @@ import base.model.UnitOfMeasure;
 import base.repositories.CategoryRepository;
 import base.repositories.RecipeRepository;
 import base.repositories.UnitOfMeasureRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Component
 public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
 
@@ -39,6 +41,8 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
     }
 
     private List<Recipe> getRecipes() {
+
+        log.debug("In the getRecipes method of DataLoader class.");
 
         List<Recipe> recipes = new ArrayList<>(2);
 
