@@ -2,18 +2,16 @@ package base.converters;
 
 import base.commands.IngredientCommand;
 import base.model.Ingredient;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class IngredientCommandToIngredient implements Converter<IngredientCommand, Ingredient> {
 
     private final UnitOfMeasureCommandToUnitOfMeasure uomConverter;
-
-    public IngredientCommandToIngredient(UnitOfMeasureCommandToUnitOfMeasure uomConverter) {
-        this.uomConverter = uomConverter;
-    }
 
     @Nullable
     @Override
