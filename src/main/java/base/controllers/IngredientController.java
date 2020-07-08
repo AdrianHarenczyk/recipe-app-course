@@ -1,6 +1,8 @@
 package base.controllers;
 
 import base.commands.IngredientCommand;
+import base.commands.RecipeCommand;
+import base.commands.UnitOfMeasureCommand;
 import base.services.IngredientService;
 import base.services.RecipeService;
 import base.services.UnitOfMeasureService;
@@ -36,6 +38,24 @@ public class IngredientController {
         model.addAttribute("ingredient",
                 ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(ingredientId)));
         return "recipe/ingredient/show";
+    }
+
+    @GetMapping
+    @RequestMapping("recipe/{recipeId}/ingredient/new")
+    public String newRecipe(@PathVariable String recipeId, Model model) {
+        RecipeCommand command = recipeService.findCommandById(Long.valueOf(recipeId));
+        if (command == null) {
+            throw new RuntimeException("Recipe id is incorrect.");
+        }
+
+        IngredientCommand ingredientCommand = new IngredientCommand();
+        ingredientCommand.setRecipeId(Long.valueOf(recipeId));
+        ingredientCommand.setUnitOfMeasure(new UnitOfMeasureCommand());
+
+        model.addAttribute("ingredient", ingredientCommand);
+        model.addAttribute("unitOfMeasureList", unitOfMeasureService.listAllUoms());
+
+        return "recipe/ingredient/ingredientform";
     }
 
     @RequestMapping("recipe/{recipeId}/ingredient/{ingredientId}/update")
