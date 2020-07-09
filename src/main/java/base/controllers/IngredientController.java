@@ -40,6 +40,12 @@ public class IngredientController {
         return "recipe/ingredient/show";
     }
 
+    @GetMapping("/recipe/{recipeId}/ingredient/{ingredientId}/delete")
+    public String showRecipeIngredient(@PathVariable String recipeId, @PathVariable String ingredientId) {
+        ingredientService.deleteIngredient(Long.valueOf(recipeId), Long.valueOf(ingredientId));
+        return String.format("redirect:/recipe/%d/ingredients", Long.valueOf(recipeId));
+    }
+
     @GetMapping
     @RequestMapping("recipe/{recipeId}/ingredient/new")
     public String newRecipe(@PathVariable String recipeId, Model model) {

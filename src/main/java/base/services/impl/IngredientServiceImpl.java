@@ -11,8 +11,10 @@ import base.services.IngredientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -88,5 +90,23 @@ public class IngredientServiceImpl implements IngredientService {
         }
 
         return ingredientToIngredientCommand.convert(savedIngredientOptional.get());
+    }
+
+    @Override
+    public void deleteIngredient(Long recipeId, Long ingredientId) {
+        Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
+        Recipe recipe = recipeOptional.orElseThrow(RuntimeException::new);
+        Set<Ingredient> ingredients = recipe.getIngredients();
+        Iterator<Ingredient> iterator = ingredients.iterator();
+        while (iterator.hasNext()) {
+            Ingredient ingredient = iterator.next();
+            if (ingredient != null && ingredientId.equals(ingredient.getId())) {
+                iterator.remove();
+                ingredient.setRecipe(null);
+                break;
+            }
+        }
+        recipe.setIngredients(ingredients);
+        recipeRepository.save(recipe);
     }
 }
